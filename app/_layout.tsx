@@ -1,4 +1,5 @@
 import { colors } from "@/constants/theme";
+import { GatesProvider } from "@/contexts/GatesContext";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
@@ -9,7 +10,7 @@ export default function RootLayout() {
   });
 
   return (
-    <>
+    <GatesProvider>
       <StatusBar style="light" backgroundColor={colors.primary.dark} />
       <Stack
         screenOptions={{
@@ -20,6 +21,6 @@ export default function RootLayout() {
       >
         <Stack.Screen name="(intro)/Intro" />
       </Stack>
-    </>
+    </GatesProvider>
   );
 }

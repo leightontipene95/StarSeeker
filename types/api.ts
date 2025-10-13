@@ -19,6 +19,19 @@ export interface Route {
   totalCost: number;
 }
 
+export interface RecommendedTransport {
+  name: string;
+  ratePerAu: number;
+  capacity: number;
+}
+
+export interface TransportResponse {
+  recommendedTransport: RecommendedTransport;
+  journeyCost: number;
+  parkingFee: number;
+  currency: string;
+}
+
 export interface ApiError {
   error: string;
   originalException?: string;

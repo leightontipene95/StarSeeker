@@ -1,16 +1,34 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAudioPlayer } from "expo-audio";
 import { router } from "expo-router";
 import LottieView from "lottie-react-native";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 
 export default function Intro() {
+  const [hasOnboarded, setHasOnboarded] = useState<boolean | null>(null);
+  
   const whooshPlayer = useAudioPlayer(
     require("../../assets/audio/simple-whoosh-382724.mp3")
   );
   const doorLockPlayer = useAudioPlayer(
     require("../../assets/audio/door-lock-82542.mp3")
   );
+
+  useEffect(() => {
+    // Check if user has already completed onboarding
+    const checkOnboardingStatus = async () => {
+      try {
+        const value = await AsyncStorage.getItem("@has_onboarded");
+        setHasOnboarded(value === "true");
+      } catch (error) {
+        console.error("Error reading onboarding status:", error);
+        setHasOnboarded(false);
+      }
+    };
+
+    checkOnboardingStatus();
+  }, []);
 
   useEffect(() => {
     let mounted = true;
@@ -41,7 +59,14 @@ export default function Intro() {
   }, []);
 
   const handleAnimationFinish = () => {
-    router.replace("/(onboarding)/Landing");
+    // Route based on onboarding status:
+    // - If user has completed onboarding, go directly to main app
+    // - Otherwise, show landing/onboarding flow
+    if (hasOnboarded) {
+      router.replace("/(tabs)/Gates");
+    } else {
+      router.replace("/(onboarding)/Landing");
+    }
   };
 
   return (

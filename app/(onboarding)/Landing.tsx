@@ -1,6 +1,7 @@
 import AnimatedBackground from "@/components/AnimatedBackground";
 import Button from "@/components/Button";
 import { colors, spacing, typography } from "@/constants/theme";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
 import { useEffect, useRef } from "react";
 import { Animated, StyleSheet, Text, View } from "react-native";
@@ -62,20 +63,36 @@ export default function Landing() {
     });
   }, []);
 
-  const handleGetStarted = () => {
-    router.push("/(onboarding)/FirstName");
+  const handleGetStarted = async () => {
+    try {
+      // Mark user as onboarded so they skip intro on next launch
+      await AsyncStorage.setItem("@has_onboarded", "true");
+      router.push("/(onboarding)/FirstName");
+    } catch (error) {
+      console.error("Error saving onboarding status:", error);
+      // Continue to next screen even if storage fails
+      router.push("/(onboarding)/FirstName");
+    }
   };
 
   return (
     <View style={styles.container}>
       <AnimatedBackground />
 
-      <Animated.View style={[styles.content, { opacity: titleOpacity, transform: [{ scale: titlePulse }] }]}>
+      <Animated.View
+        style={[
+          styles.content,
+          { opacity: titleOpacity, transform: [{ scale: titlePulse }] },
+        ]}
+      >
         <Text style={styles.title}>StarSeeker</Text>
       </Animated.View>
 
       <Animated.View
-        style={[styles.buttonContainer, { opacity: buttonOpacity, transform: [{ scale: buttonPulse }] }]}
+        style={[
+          styles.buttonContainer,
+          { opacity: buttonOpacity, transform: [{ scale: buttonPulse }] },
+        ]}
       >
         <Button title="Get Started" onPress={handleGetStarted} />
       </Animated.View>

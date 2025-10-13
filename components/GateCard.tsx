@@ -1,15 +1,50 @@
 import { borderRadius, colors, spacing } from "@/constants/theme";
+import { cache } from "@/services/cache";
 import { Gate } from "@/types/api";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { StyleSheet, Text, View } from "react-native";
+import { useEffect, useState } from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 interface GateCardProps {
   gate: Gate;
 }
 
+/**
+ * GateCard Component
+ * 
+ * Displays a single hyperspace gate with its details:
+ * - Gate name and code
+ * - Favorite toggle button
+ * - List of connected gates with distances
+ */
 export default function GateCard({ gate }: GateCardProps) {
+  // Track whether this gate is favorited
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  // Check favorite status when gate changes
+  useEffect(() => {
+    checkFavoriteStatus();
+  }, [gate.code]);
+
+  /**
+   * Check if this gate is in the user's favorites
+   */
+  const checkFavoriteStatus = async () => {
+    const favorites = await cache.getFavorites();
+    setIsFavorite(favorites.includes(gate.code));
+  };
+
+  /**
+   * Toggle favorite status for this gate
+   */
+  const toggleFavorite = async () => {
+    const newStatus = await cache.toggleFavorite(gate.code);
+    setIsFavorite(newStatus);
+  };
+
   return (
     <View style={styles.card}>
+      {/* Gate header with icon, name, code, and favorite button */}
       <View style={styles.header}>
         <MaterialCommunityIcons
           name="tunnel-outline"
@@ -20,8 +55,19 @@ export default function GateCard({ gate }: GateCardProps) {
           <Text style={styles.name}>{gate.name}</Text>
           <Text style={styles.code}>{gate.code}</Text>
         </View>
+        <TouchableOpacity
+          onPress={toggleFavorite}
+          style={styles.favoriteButton}
+        >
+          <MaterialCommunityIcons
+            name={isFavorite ? "heart" : "heart-outline"}
+            size={28}
+            color={isFavorite ? "#FF6B9D" : colors.text.tertiary}
+          />
+        </TouchableOpacity>
       </View>
 
+      {/* Connected gates section */}
       <View style={styles.linksContainer}>
         <Text style={styles.linksTitle}>
           Connected Gates ({gate.links.length})
@@ -30,7 +76,7 @@ export default function GateCard({ gate }: GateCardProps) {
           {gate.links.map((link, index) => (
             <View key={index} style={styles.linkItem}>
               <Text style={styles.linkCode}>{link.code}</Text>
-              <Text style={styles.linkDistance}>{link.hu} HU</Text>
+              <Text style={styles.linkDistance}>{link.hu} AU</Text>
             </View>
           ))}
         </View>
@@ -56,6 +102,10 @@ const styles = StyleSheet.create({
   headerText: {
     marginLeft: spacing.md,
     flex: 1,
+  },
+  favoriteButton: {
+    padding: spacing.xs,
+    marginLeft: spacing.sm,
   },
   name: {
     fontSize: 24,

@@ -1,4 +1,4 @@
-import { ApiError, Gate, Route } from "@/types/api";
+import { ApiError, Gate, Route, TransportResponse } from "@/types/api";
 
 // Load API configuration from environment variables
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
@@ -69,6 +69,17 @@ class ApiService {
    */
   async getRoute(fromCode: string, toCode: string): Promise<Route> {
     return this.request<Route>(`/gates/${fromCode}/to/${toCode}`);
+  }
+
+  /**
+   * Get transport recommendation and cost for a given distance, passengers, and parking days
+   * @param distance - Distance in AUs
+   * @param passengers - Number of passengers
+   * @param parking - Number of parking days
+   * @returns Transport recommendation with journey cost and parking fee
+   */
+  async getTransport(distance: number, passengers: number, parking: number): Promise<TransportResponse> {
+    return this.request<TransportResponse>(`/transport/${distance}?passengers=${passengers}&parking=${parking}`);
   }
 
   /**

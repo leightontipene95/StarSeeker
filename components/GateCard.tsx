@@ -2,7 +2,8 @@ import { borderRadius, colors, spacing } from "@/constants/theme";
 import { cache } from "@/services/cache";
 import { Gate } from "@/types/api";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { useEffect, useState } from "react";
+import { useFocusEffect, useRouter } from "expo-router";
+import { useCallback, useEffect, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 interface GateCardProps {
@@ -18,6 +19,7 @@ interface GateCardProps {
  * - List of connected gates with distances
  */
 export default function GateCard({ gate }: GateCardProps) {
+  const router = useRouter();
   // Track whether this gate is favorited
   const [isFavorite, setIsFavorite] = useState(false);
 
@@ -25,6 +27,13 @@ export default function GateCard({ gate }: GateCardProps) {
   useEffect(() => {
     checkFavoriteStatus();
   }, [gate.code]);
+
+  // Refresh favorite status when screen comes into focus
+  useFocusEffect(
+    useCallback(() => {
+      checkFavoriteStatus();
+    }, [gate.code])
+  );
 
   /**
    * Check if this gate is in the user's favorites
@@ -42,8 +51,18 @@ export default function GateCard({ gate }: GateCardProps) {
     setIsFavorite(newStatus);
   };
 
+  /**
+   * Navigate to gate details screen
+   */
+  const handlePress = () => {
+    router.push({
+      pathname: "/GateDetails",
+      params: { gateCode: gate.code },
+    });
+  };
+
   return (
-    <View style={styles.card}>
+    <TouchableOpacity style={styles.card} onPress={handlePress} activeOpacity={0.7}>
       {/* Gate header with icon, name, code, and favorite button */}
       <View style={styles.header}>
         <MaterialCommunityIcons
@@ -81,7 +100,7 @@ export default function GateCard({ gate }: GateCardProps) {
           ))}
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 

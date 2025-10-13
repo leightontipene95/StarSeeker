@@ -1,6 +1,7 @@
 import { api } from "@/services/api";
 import { cache } from "@/services/cache";
 import { Gate } from "@/types/api";
+import NetInfo from "@react-native-community/netinfo";
 import {
   createContext,
   ReactNode,
@@ -22,10 +23,29 @@ export function GatesProvider({ children }: { children: ReactNode }) {
   const [gates, setGates] = useState<Gate[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [wasOffline, setWasOffline] = useState(false);
 
   useEffect(() => {
     loadGates();
-  }, []);
+
+    // Listen for network state changes
+    const unsubscribe = NetInfo.addEventListener((state) => {
+      const isConnected = state.isConnected;
+
+      // If we were offline and now we're online, refresh data
+      if (wasOffline && isConnected) {
+        console.log("Network reconnected - refreshing gates data");
+        fetchAndCacheGates().catch(console.error);
+      }
+
+      // Update offline state
+      setWasOffline(!isConnected);
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [wasOffline]);
 
   const loadGates = async () => {
     try {

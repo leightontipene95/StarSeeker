@@ -107,10 +107,13 @@ export default function FirstName() {
       <AnimatedBackground />
 
       <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
         style={styles.keyboardView}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}
       >
         <View style={styles.content}>
+          <View style={styles.spacer} />
+          
           <View style={styles.header}>
             <Animated.View
               style={{
@@ -162,6 +165,8 @@ export default function FirstName() {
               disabled={!isValid}
             />
           </Animated.View>
+          
+          <View style={styles.spacer} />
         </View>
       </KeyboardAvoidingView>
     </View>
@@ -177,9 +182,13 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: spacing.xl,
+    paddingVertical: spacing.xl,
+  },
+  spacer: {
+    flex: 1,
   },
   header: {
     alignItems: "center",

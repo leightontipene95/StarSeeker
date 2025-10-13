@@ -5,7 +5,8 @@ import { borderRadius, colors, spacing } from "@/constants/theme";
 import { useGates } from "@/contexts/GatesContext";
 import { cache } from "@/services/cache";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
-import { useEffect, useState } from "react";
+import { useFocusEffect } from "expo-router";
+import { useCallback, useEffect, useState } from "react";
 import {
   ActivityIndicator,
   FlatList,
@@ -18,7 +19,7 @@ import {
 
 /**
  * Gates Screen
- * 
+ *
  * Displays a searchable, filterable list of hyperspace gates.
  * Features include:
  * - Search by gate name or code
@@ -36,10 +37,17 @@ export default function Gates() {
   // List of favorite gate codes
   const [favorites, setFavorites] = useState<string[]>([]);
 
-  // Load favorites on mount
+  // Load favorites on mount and when screen comes into focus
   useEffect(() => {
     loadFavorites();
   }, []);
+
+  // Reload favorites when screen comes into focus (e.g., returning from GateDetails)
+  useFocusEffect(
+    useCallback(() => {
+      loadFavorites();
+    }, [])
+  );
 
   // Reapply filters whenever search, gates, or favorites change
   useEffect(() => {

@@ -48,7 +48,7 @@ Scan the QR code below with the Expo Go app to try StarSeeker instantly:
 1. **Clone and install dependencies**
 
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/leightontipene95/StarSeeker.git
    cd StarSeeker
    npm install
    ```
@@ -86,7 +86,7 @@ eas build --profile production
 
 ### Publishing Updates
 
-Share updates with your team without rebuilding:
+Share updates without rebuilding:
 
 ```bash
 # Publish to preview channel
@@ -102,7 +102,7 @@ eas update --channel production --message "v1.0.1 release"
 - **Navigation**: Expo Router (file-based routing)
 - **Language**: TypeScript
 - **UI**: React Native
-- **Features**: Audio support, custom fonts, splash screens
+- **Features**: Audio support, custom fonts, splash screens, lottie animations
 
 ## Project Structure
 
@@ -112,7 +112,7 @@ StarSeeker/
 ├── components/       # Reusable components
 ├── services/         # API and cache services
 ├── types/           # TypeScript type definitions
-├── assets/          # Images, fonts, icons
+├── assets/          # Images, fonts, icons, sound effects
 └── screenshots/     # App screenshots
 ```
 

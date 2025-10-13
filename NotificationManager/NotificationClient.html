@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>StarSeeker Mission Control</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Oxygen, Ubuntu, Cantarell, sans-serif;
+        background: linear-gradient(
+          135deg,
+          #0e1630 0%,
+          #313d6e 50%,
+          #565eb0 100%
+        );
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      h1 {
+        color: white;
+        text-align: center;
+        margin-bottom: 30px;
+        font-size: 2.5em;
+        text-shadow: 0 0 20px rgba(155, 168, 232, 0.5);
+      }
+
+      .card {
+        background: white;
+        border-radius: 12px;
+        padding: 25px;
+        margin-bottom: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      .card h2 {
+        color: #333;
+        margin-bottom: 20px;
+        font-size: 1.5em;
+        border-bottom: 2px solid #565eb0;
+        padding-bottom: 10px;
+      }
+
+      .tokens-info {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+      }
+
+      .token-item {
+        padding: 8px;
+        margin: 5px 0;
+        background: white;
+        border-radius: 4px;
+        font-family: monospace;
+        font-size: 0.9em;
+      }
+
+      .preset-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 15px;
+        margin-bottom: 20px;
+      }
+
+      .preset-btn {
+        background: linear-gradient(135deg, #313d6e 0%, #565eb0 100%);
+        color: white;
+        border: none;
+        padding: 15px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 1em;
+        transition: transform 0.2s, box-shadow 0.2s;
+        text-align: left;
+      }
+
+      .preset-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(155, 168, 232, 0.6);
+      }
+
+      .preset-btn:active {
+        transform: translateY(0);
+      }
+
+      .preset-title {
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+
+      .preset-desc {
+        font-size: 0.85em;
+        opacity: 0.9;
+      }
+
+      .custom-form {
+        display: grid;
+        gap: 15px;
+      }
+
+      .form-group {
+        display: flex;
+        flex-direction: column;
+      }
+
+      label {
+        margin-bottom: 5px;
+        font-weight: 600;
+        color: #333;
+      }
+
+      input,
+      textarea,
+      select {
+        padding: 10px;
+        border: 2px solid #e0e0e0;
+        border-radius: 6px;
+        font-size: 1em;
+        transition: border-color 0.3s;
+      }
+
+      input:focus,
+      textarea:focus,
+      select:focus {
+        outline: none;
+        border-color: #565eb0;
+      }
+
+      textarea {
+        resize: vertical;
+        min-height: 80px;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #313d6e 0%, #565eb0 100%);
+        color: white;
+        border: none;
+        padding: 12px 30px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 1.1em;
+        font-weight: 600;
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(155, 168, 232, 0.6);
+      }
+
+      .automation-controls {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+        margin-top: 15px;
+      }
+
+      .toggle-btn {
+        padding: 10px 20px;
+        border: 2px solid #565eb0;
+        background: white;
+        color: #565eb0;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s;
+      }
+
+      .toggle-btn.active {
+        background: #565eb0;
+        color: white;
+      }
+
+      .status {
+        padding: 10px;
+        border-radius: 6px;
+        margin-top: 15px;
+        display: none;
+      }
+
+      .status.success {
+        background: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+        display: block;
+      }
+
+      .status.error {
+        background: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>🚀 StarSeeker Mission Control</h1>
+
+      <div class="card">
+        <h2>📡 Connected Travelers</h2>
+        <div class="tokens-info" id="tokensInfo">
+          <p>Loading travelers...</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>🎯 Quick Launch Notifications</h2>
+        <div class="preset-grid">
+          <button class="preset-btn" onclick="sendPreset('welcome')">
+            <div class="preset-title">🚀 Welcome Aboard</div>
+            <div class="preset-desc">Begin your cosmic journey!</div>
+          </button>
+          <button class="preset-btn" onclick="sendPreset('reminder')">
+            <div class="preset-title">⏰ Launch Reminder</div>
+            <div class="preset-desc">Your departure is approaching!</div>
+          </button>
+          <button class="preset-btn" onclick="sendPreset('achievement')">
+            <div class="preset-title">🏆 Mission Complete</div>
+            <div class="preset-desc">You've reached a new destination!</div>
+          </button>
+          <button class="preset-btn" onclick="sendPreset('update')">
+            <div class="preset-title">✨ New Routes Available</div>
+            <div class="preset-desc">Explore new destinations!</div>
+          </button>
+          <button class="preset-btn" onclick="sendPreset('booking')">
+            <div class="preset-title">🎫 Booking Confirmed</div>
+            <div class="preset-desc">Your rocket is ready!</div>
+          </button>
+          <button class="preset-btn" onclick="sendPreset('alert')">
+            <div class="preset-title">🚨 Mission Alert</div>
+            <div class="preset-desc">Urgent: Check your itinerary!</div>
+          </button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>⚙️ Automated Mission Updates</h2>
+        <div class="automation-controls">
+          <button
+            class="toggle-btn"
+            id="every10s"
+            onclick="toggleAutomation('every10s')"
+          >
+            Test Mode (Every 10s)
+          </button>
+          <button
+            class="toggle-btn"
+            id="mondayMorning"
+            onclick="toggleAutomation('mondayMorning')"
+          >
+            Weekly Launch Alert (Mon 9 AM)
+          </button>
+        </div>
+        <div id="automationStatus" class="status"></div>
+      </div>
+
+      <div class="card">
+        <h2>✏️ Custom Mission Broadcast</h2>
+        <form class="custom-form" onsubmit="sendCustom(event)">
+          <div class="form-group">
+            <label for="title">Mission Title</label>
+            <input
+              type="text"
+              id="title"
+              placeholder="Enter mission title"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="body">Mission Details</label>
+            <textarea
+              id="body"
+              placeholder="Enter mission details"
+              required
+            ></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="target">Broadcast To</label>
+            <select id="target">
+              <option value="all">All Travelers</option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn-primary">
+            🚀 Launch Notification
+          </button>
+        </form>
+        <div id="customStatus" class="status"></div>
+      </div>
+    </div>
+
+    <script>
+      const API_URL = "http://localhost:3001";
+      let tokens = [];
+      let automations = {
+        every10s: null,
+        mondayMorning: null,
+      };
+
+      const presets = {
+        welcome: {
+          title: "🚀 Welcome Aboard StarSeeker!",
+          body: "Your cosmic adventure begins now. Explore destinations across the galaxy!",
+        },
+        reminder: {
+          title: "⏰ Launch Window Approaching",
+          body: "Your rocket departs in 24 hours. Don't miss your journey to the stars!",
+        },
+        achievement: {
+          title: "🏆 Destination Reached!",
+          body: "Congratulations! You've successfully completed your space voyage.",
+        },
+        update: {
+          title: "✨ New Destinations Available",
+          body: "We've added new planets and moons to explore. Book your next adventure!",
+        },
+        booking: {
+          title: "🎫 Booking Confirmed",
+          body: "Your rocket is fueled and ready. Prepare for an unforgettable journey!",
+        },
+        alert: {
+          title: "🚨 Mission Update Required",
+          body: "Important: Please review your travel itinerary and confirm details.",
+        },
+      };
+
+      async function loadTokens() {
+        try {
+          const response = await fetch(`${API_URL}/tokens`);
+          const data = await response.json();
+
+          if (data.success) {
+            tokens = data.travelers || data.users;
+            displayTokens();
+            updateTargetSelect();
+          }
+        } catch (error) {
+          document.getElementById("tokensInfo").innerHTML =
+            '<p style="color: red;">⚠️ Mission Control offline. Make sure the server is running.</p>';
+        }
+      }
+
+      function displayTokens() {
+        const container = document.getElementById("tokensInfo");
+        if (tokens.length === 0) {
+          container.innerHTML =
+            "<p>No travelers connected yet. Waiting for crew members...</p>";
+          return;
+        }
+
+        container.innerHTML = `
+                <p><strong>${
+                  tokens.length
+                }</strong> traveler(s) ready for launch:</p>
+                ${tokens
+                  .map(
+                    (t, i) => `
+                    <div class="token-item">
+                        <strong>🧑‍🚀 ${t.name}</strong>: ${t.token.substring(
+                      0,
+                      30
+                    )}...
+                    </div>
+                `
+                  )
+                  .join("")}
+            `;
+      }
+
+      function updateTargetSelect() {
+        const select = document.getElementById("target");
+        select.innerHTML = '<option value="all">All Travelers</option>';
+
+        tokens.forEach((user, index) => {
+          const option = document.createElement("option");
+          option.value = index;
+          option.textContent = `🧑‍🚀 ${user.name}`;
+          select.appendChild(option);
+        });
+      }
+
+      async function sendPreset(presetName) {
+        const preset = presets[presetName];
+        await sendNotification(preset.title, preset.body, "all");
+      }
+
+      async function sendCustom(event) {
+        event.preventDefault();
+
+        const title = document.getElementById("title").value;
+        const body = document.getElementById("body").value;
+        const target = document.getElementById("target").value;
+
+        await sendNotification(title, body, target);
+      }
+
+      async function sendNotification(title, body, target) {
+        const statusEl = document.getElementById("customStatus");
+
+        try {
+          const payload = {
+            title,
+            body,
+            target: target === "all" ? "all" : "individual",
+            sound: "default",
+            badge: 1,
+          };
+
+          if (target !== "all") {
+            payload.userIndex = parseInt(target);
+          }
+
+          const response = await fetch(`${API_URL}/send`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload),
+          });
+
+          const data = await response.json();
+
+          if (data.success) {
+            showStatus(
+              "customStatus",
+              "🚀 Mission broadcast sent successfully!",
+              "success"
+            );
+          } else {
+            showStatus(
+              "customStatus",
+              "❌ Mission broadcast failed: " + (data.error || "Unknown error"),
+              "error"
+            );
+          }
+        } catch (error) {
+          showStatus(
+            "customStatus",
+            "❌ Mission Control error: " + error.message,
+            "error"
+          );
+        }
+      }
+
+      function showStatus(elementId, message, type) {
+        const el = document.getElementById(elementId);
+        el.textContent = message;
+        el.className = `status ${type}`;
+        setTimeout(() => {
+          el.className = "status";
+        }, 5000);
+      }
+
+      function toggleAutomation(type) {
+        const btn = document.getElementById(type);
+
+        if (automations[type]) {
+          clearInterval(automations[type]);
+          automations[type] = null;
+          btn.classList.remove("active");
+          showStatus(
+            "automationStatus",
+            `⏸️ ${type === "every10s" ? "Test mode" : "Weekly alerts"} paused`,
+            "success"
+          );
+        } else {
+          if (type === "every10s") {
+            automations[type] = setInterval(() => {
+              sendPreset("reminder");
+            }, 10000);
+            showStatus(
+              "automationStatus",
+              "🚀 Test mode active - sending notifications every 10 seconds",
+              "success"
+            );
+          } else if (type === "mondayMorning") {
+            checkMondayMorning();
+            automations[type] = setInterval(checkMondayMorning, 60000);
+            showStatus(
+              "automationStatus",
+              "📅 Weekly launch alerts scheduled for Monday 9 AM",
+              "success"
+            );
+          }
+          btn.classList.add("active");
+        }
+      }
+
+      function checkMondayMorning() {
+        const now = new Date();
+        const day = now.getDay();
+        const hour = now.getHours();
+
+        if (day === 1 && hour === 9) {
+          sendPreset("reminder");
+        }
+      }
+
+      loadTokens();
+      setInterval(loadTokens, 30000);
+    </script>
+  </body>
+</html>

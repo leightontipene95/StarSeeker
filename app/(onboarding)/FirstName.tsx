@@ -4,14 +4,14 @@ import { borderRadius, colors, spacing } from "@/constants/theme";
 import { useRouter } from "expo-router";
 import { useEffect, useRef, useState } from "react";
 import {
-  Animated,
-  Keyboard,
-  KeyboardAvoidingView,
-  Platform,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
+    Animated,
+    Keyboard,
+    KeyboardAvoidingView,
+    Platform,
+    StyleSheet,
+    Text,
+    TextInput,
+    View,
 } from "react-native";
 
 export default function FirstName() {
@@ -93,7 +93,10 @@ export default function FirstName() {
     if (name.trim()) {
       console.log("User name:", name.trim());
       Keyboard.dismiss();
-      router.push("/(onboarding)/NotificationsPermissions");
+      router.push({
+        pathname: "/(onboarding)/NotificationsPermissions",
+        params: { userName: name.trim() },
+      });
     }
   };
 

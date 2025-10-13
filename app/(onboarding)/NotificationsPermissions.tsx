@@ -1,10 +1,12 @@
 import AnimatedBackground from "@/components/AnimatedBackground";
+import { api } from "@/services/api";
+
 import Button from "@/components/Button";
 import { colors, spacing } from "@/constants/theme";
 import { Ionicons } from "@expo/vector-icons";
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
-import { useRouter } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useRef, useState } from "react";
 import {
   Alert,
@@ -28,6 +30,7 @@ Notifications.setNotificationHandler({
 
 export default function NotificationsPermissions() {
   const router = useRouter();
+  const { userName } = useLocalSearchParams<{ userName: string }>();
   const [loading, setLoading] = useState(false);
   const iconScale = useRef(new Animated.Value(0)).current;
   const bellShake = useRef(new Animated.Value(0)).current;
@@ -185,11 +188,16 @@ export default function NotificationsPermissions() {
   const handleEnableNotifications = async () => {
     setLoading(true);
     try {
-      await registerForPushNotificationsAsync();
-       router.push('/(tabs)/Gates');
+      const token = await registerForPushNotificationsAsync();
+
+      if (token && userName) {
+        // Store the user with their token in the backend
+        await api.storeUser(userName, token);
+        console.log("User and push token stored successfully");
+      }
+
+      router.push("/(tabs)/Gates");
     } catch (error) {
-
-
       console.error("Error requesting notifications:", error);
       Alert.alert("Error", "Failed to enable notifications. Please try again.");
     } finally {
@@ -199,7 +207,7 @@ export default function NotificationsPermissions() {
 
   const handleSkip = () => {
     console.log("User skipped notifications");
-       router.push('/(tabs)/Gates');
+    router.push("/(tabs)/Gates");
   };
 
   const bellRotation = bellShake.interpolate({
@@ -237,10 +245,20 @@ export default function NotificationsPermissions() {
           </Animated.View>
 
           <View style={styles.textContainer}>
-            <Animated.View style={{ opacity: titleAnim, transform: [{ translateY: titleSlide }] }}>
+            <Animated.View
+              style={{
+                opacity: titleAnim,
+                transform: [{ translateY: titleSlide }],
+              }}
+            >
               <Text style={styles.title}>Stay Updated</Text>
             </Animated.View>
-            <Animated.View style={{ opacity: subtitleAnim, transform: [{ translateY: subtitleSlide }] }}>
+            <Animated.View
+              style={{
+                opacity: subtitleAnim,
+                transform: [{ translateY: subtitleSlide }],
+              }}
+            >
               <Text style={styles.subtitle}>
                 Get notified about deals, delays, cancellations, and more.
               </Text>
@@ -249,7 +267,15 @@ export default function NotificationsPermissions() {
         </View>
 
         <View style={styles.buttonContainer}>
-          <Animated.View style={[{ width: '100%' }, { opacity: button1Anim, transform: [{ translateY: button1Slide }] }]}>
+          <Animated.View
+            style={[
+              { width: "100%" },
+              {
+                opacity: button1Anim,
+                transform: [{ translateY: button1Slide }],
+              },
+            ]}
+          >
             <Button
               title="Enable Notifications"
               onPress={handleEnableNotifications}
@@ -258,7 +284,15 @@ export default function NotificationsPermissions() {
             />
           </Animated.View>
 
-          <Animated.View style={[{ width: '100%' }, { opacity: button2Anim, transform: [{ translateY: button2Slide }] }]}>
+          <Animated.View
+            style={[
+              { width: "100%" },
+              {
+                opacity: button2Anim,
+                transform: [{ translateY: button2Slide }],
+              },
+            ]}
+          >
             <Button
               title="Maybe Later"
               onPress={handleSkip}

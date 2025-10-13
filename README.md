@@ -1,50 +1,124 @@
-# Welcome to your Expo app 👋
+# StarSeeker ✨
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A mobile app for tracking and managing gate information, built with Expo and React Native.
 
-## Get started
+## Quick Start - Try it Now!
 
-1. Install dependencies
+Scan the QR code below with the Expo Go app to try StarSeeker instantly:
+
+<div align="center">
+  <img src="screenshots/qr.png" alt="Expo Go QR Code" width="300" />
+</div>
+
+### Installation Steps
+
+1. **Install Expo Go** on your device:
+   - [iOS App Store](https://apps.apple.com/app/expo-go/id982107779)
+   - [Android Play Store](https://play.google.com/store/apps/details?id=host.exp.exponent)
+
+2. **Scan the QR code** above with:
+   - iOS: Use your Camera app
+   - Android: Use the Expo Go app's built-in scanner
+
+3. **Start exploring!** The app will load automatically.
+
+## Screenshots
+
+<div align="center">
+  <img src="screenshots/iphone-landing.png" alt="Landing Screen" width="250" />
+  <img src="screenshots/iphone-home.png" alt="Home Screen" width="250" />
+  <img src="screenshots/ipad-landing.png" alt="iPad Landing" width="350" />
+</div>
+
+<div align="center">
+  <img src="screenshots/ipad-home.png" alt="iPad Home" width="350" />
+  <img src="screenshots/ipad-notifications.png" alt="Notifications" width="350" />
+</div>
+
+## Development Setup
+
+### Prerequisites
+
+- Node.js (v18 or newer)
+- npm or yarn
+- Expo Go app (for testing)
+
+### Local Development
+
+1. **Clone and install dependencies**
 
    ```bash
+   git clone <repository-url>
+   cd StarSeeker
    npm install
    ```
 
-2. Start the app
+2. **Start the development server**
 
    ```bash
    npx expo start
    ```
 
-In the output, you'll find options to open the app in a
+3. **Run on your device**
+   - Scan the QR code with Expo Go
+   - Press `i` for iOS simulator
+   - Press `a` for Android emulator
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Building for Production
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+This project uses EAS (Expo Application Services) for building production apps.
 
-## Get a fresh project
-
-When you're ready, run:
+### Build Profiles
 
 ```bash
-npm run reset-project
+# Development build with debugging tools
+eas build --profile development
+
+# Preview build for testing
+eas build --profile preview
+
+# Android APK for direct distribution
+eas build --profile preview-apk --platform android
+
+# Production build for app stores
+eas build --profile production
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### Publishing Updates
 
-## Learn more
+Share updates with your team without rebuilding:
 
-To learn more about developing your project with Expo, look at the following resources:
+```bash
+# Publish to preview channel
+eas update --channel preview --message "Latest changes"
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+# Publish to production
+eas update --channel production --message "v1.0.1 release"
+```
 
-## Join the community
+## Tech Stack
 
-Join our community of developers creating universal apps.
+- **Framework**: Expo SDK 54
+- **Navigation**: Expo Router (file-based routing)
+- **Language**: TypeScript
+- **UI**: React Native
+- **Features**: Audio support, custom fonts, splash screens
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## Project Structure
+
+```
+StarSeeker/
+├── app/              # File-based routing (screens)
+├── components/       # Reusable components
+├── services/         # API and cache services
+├── types/           # TypeScript type definitions
+├── assets/          # Images, fonts, icons
+└── screenshots/     # App screenshots
+```
+
+## Learn More
+
+- [Expo Documentation](https://docs.expo.dev/)
+- [Expo Router](https://docs.expo.dev/router/introduction/)
+- [EAS Build](https://docs.expo.dev/build/introduction/)
+- [EAS Update](https://docs.expo.dev/eas-update/introduction/)

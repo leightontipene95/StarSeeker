@@ -28,6 +28,8 @@
       "predictiveBackGestureEnabled": false,
       "permissions": [
         "android.permission.RECORD_AUDIO",
+        "android.permission.MODIFY_AUDIO_SETTINGS",
+        "android.permission.RECORD_AUDIO",
         "android.permission.MODIFY_AUDIO_SETTINGS"
       ]
     },
@@ -56,6 +58,12 @@
       "typedRoutes": true,
       "reactCompiler": true
     },
-    "owner": "leightontipenne"
+    "owner": "leightontipenne",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/a08426d0-b583-470f-bbf8-2ee70d6510bf"
+    }
   }
 }

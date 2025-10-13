@@ -1,0 +1,57 @@
+{
+  "cli": {
+    "version": ">= 13.2.0"
+  },
+  "build": {
+    "development": {
+      // Development builds for internal testing with dev client
+      // Use: eas build --profile development
+      // Includes developer tools and debugging capabilities
+      "developmentClient": true,
+      "distribution": "internal",
+      "channel": "development"
+    },
+    "preview": {
+      // Preview builds for internal testing before production
+      // Use: eas build --profile preview
+      // Optimized build without dev tools, for QA and stakeholder review
+      "distribution": "internal",
+      "channel": "preview"
+    },
+    "preview-apk": {
+      // Android APK build for easy distribution and testing
+      // Use: eas build --profile preview-apk --platform android
+      // Generates an APK file that can be directly installed on Android devices
+      // Useful for testing without Google Play Store
+      "android": {
+        "buildType": "apk"
+      },
+      "distribution": "internal",
+      "channel": "preview"
+    },
+    "staging": {
+      // Staging builds for pre-production testing
+      // Use: eas build --profile staging
+      // Mirrors production environment for final testing
+      "channel": "staging",
+      "distribution": "internal"
+    },
+    "production": {
+      // Production builds for app store submission
+      // Use: eas build --profile production
+      // Fully optimized for end users
+      "channel": "production",
+      "distribution": "store"
+    },
+    "production-apk": {
+      // Production Android APK for direct distribution
+      // Use: eas build --profile production-apk --platform android
+      // For distributing production builds outside of Google Play Store
+      "android": {
+        "buildType": "apk"
+      },
+      "channel": "production",
+      "distribution": "internal"
+    }
+  }
+}

@@ -70,7 +70,13 @@ export default function Intro() {
   };
 
   return (
-    <View style={styles.container}>
+    <View 
+      style={styles.container}
+      accessible={true}
+      accessibilityLabel="StarSeeker intro screen"
+      accessibilityHint="Loading the app with hyperspace animation, please wait"
+      accessibilityRole="none"
+    >
       <LottieView
         source={require("../../assets/animations/intro-animation.json")}
         autoPlay
@@ -79,6 +85,7 @@ export default function Intro() {
         onAnimationFinish={handleAnimationFinish}
       />
     </View>
+  );</View>
   );
 }
 

@@ -7,7 +7,7 @@ import { StyleSheet, View } from "react-native";
 
 export default function Intro() {
   const [hasOnboarded, setHasOnboarded] = useState<boolean | null>(null);
-  
+
   const whooshPlayer = useAudioPlayer(
     require("../../assets/audio/simple-whoosh-382724.mp3")
   );
@@ -27,7 +27,7 @@ export default function Intro() {
       }
     };
 
-    checkOnboardingStatus();
+    checkOnboardingStatus();  
   }, []);
 
   useEffect(() => {
@@ -70,7 +70,7 @@ export default function Intro() {
   };
 
   return (
-    <View 
+    <View
       style={styles.container}
       accessible={true}
       accessibilityLabel="StarSeeker intro screen"
@@ -85,7 +85,6 @@ export default function Intro() {
         onAnimationFinish={handleAnimationFinish}
       />
     </View>
-  );</View>
   );
 }
 

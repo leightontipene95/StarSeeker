@@ -227,15 +227,17 @@ Then open `NotificationClient.html` or 'http://localhost:3001' in your browser t
 
 ## Final Thoughts
 
-I really enjoyed working on this project. I loved the freedom to go in any direction I wanted. I genuinely enjoy this work and jump at any opportunity to get some smooth animations in there. This has been a personal goal for me. I animated the bigger animations in Figma and converted to lottie/json, using tools to convert the KHC logo into vectors and working away, this is great because these animations could be blown up onto billboards and still hold the same quality, I think the whole intro animation ended up as like 65KB all up 🤯. 
-I think it's these micro interactions and little things that users down-right demand these days and all add up to the whole user experience. It's the difference between DuoLingo and any other language-learning app - just that little bit extra polished. The app looks great on my iPad too although I did build the intro animations intended for mobile so would need to readjust this also. 
-Lots of things I would like to add to this app but hopefully this is enough to demonstrate some of my experience and how I like to work. Looking forward to meeting with you. If you have any trouble please just contact me. Also there are limitations with the Expo Go build. The sound effects seem to be on/off (imagine a whoosh -> key/lock click for the KHC logo)and notifications are limited.
+I really enjoyed working on this project. I loved the freedom to go in any direction I wanted. I genuinely enjoy this work and jump at any opportunity to get some smooth animations in there. This has been a personal goal for me. I animated the bigger animations in Figma and converted to lottie/json, using tools to convert the KHC logo into vectors and working away, this is great because these animations could be blown up onto billboards and still hold the same quality, I think the whole intro animation ended up as like 65KB all up 🤯.
 
-## Some AI Tools I Used
+I think it's these micro interactions and little things that users down-right demand these days and all add up to the whole user experience. It's the difference between DuoLingo and any other language-learning app - just that little bit extra polished. The app looks great on my iPad too although I did build the intro animations intended for mobile so would need to readjust this also.
 
-CANVA AI - For design inspiration and mockups
-Vectorizer.AI - For converting KHC logo to vectors
-CoPilot in VSCode - Boilerplate code, comments and tab autocomplete
+Lots of things I would like to add to this app but hopefully this is enough to demonstrate some of my experience and how I like to work. Looking forward to meeting with you. If you have any trouble please just contact me. Also there are limitations with the Expo Go build. The sound effects seem to be on/off (imagine a whoosh → key/lock click for the KHC logo) and notifications are limited.
+
+## AI Tools I Used
+
+- **CANVA AI** - For design inspiration and mockups
+- **Vectorizer.AI** - For converting KHC logo to vectors
+- **CoPilot in VSCode** - Boilerplate code, comments and tab autocomplete
 
 ## Learn More
 

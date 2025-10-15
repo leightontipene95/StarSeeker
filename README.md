@@ -169,7 +169,7 @@ StarSeeker/
 **Accessibility:**
 
 - Started implementing screen reader support in `Intro.tsx` with `accessibilityLabel` and `accessibilityHint`.
-- Full accessibility coverage across all components would be prioritised in production, including proper focus management and keyboard navigation.
+- Full accessibility coverage across all components would be prioritised in production.
 
 **Testing Scope:**
 

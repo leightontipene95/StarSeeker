@@ -122,7 +122,7 @@ StarSeeker/
 
 ### 1. **Project Structure**
 
-- **Scalable Folder Organisation:** Separated by feature and concern (`components/`, `hooks/`, `services/`, `screens/`), supporting team growth and maintainability.
+- **Scalable Folder Organisation:** Separated by feature and concern (`components/`, `services/`, `screens/`), supporting team growth and maintainability.
 - **Navigation:** Utilised Expo Router for a modern, file-based approach to navigation. Built on top of React Navigation and feels more clean.
 
 ### 2. **API Layer**

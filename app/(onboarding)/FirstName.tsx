@@ -4,14 +4,14 @@ import { borderRadius, colors, spacing } from "@/constants/theme";
 import { useRouter } from "expo-router";
 import { useEffect, useRef, useState } from "react";
 import {
-    Animated,
-    Keyboard,
-    KeyboardAvoidingView,
-    Platform,
-    StyleSheet,
-    Text,
-    TextInput,
-    View,
+  Animated,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
 } from "react-native";
 
 export default function FirstName() {
@@ -113,7 +113,7 @@ export default function FirstName() {
       >
         <View style={styles.content}>
           <View style={styles.spacer} />
-          
+
           <View style={styles.header}>
             <Animated.View
               style={{
@@ -165,7 +165,7 @@ export default function FirstName() {
               disabled={!isValid}
             />
           </Animated.View>
-          
+
           <View style={styles.spacer} />
         </View>
       </KeyboardAvoidingView>

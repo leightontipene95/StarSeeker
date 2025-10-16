@@ -195,7 +195,8 @@ Notifications can be sent directly to Expo's Push API:
 curl -X POST https://exp.host/--/api/v2/push/send \
   -H "Content-Type: application/json" \
   -d '{
-    "to": "ExponentPushToken[2S_iboIXtyrOlZc_Romx_m]",
+    "to": "YOUR_TOKEN",
+    "sound": "default]",
     "title": "Hello 👋",
     "body": "This is a test notification!",
     "data": { "extra": "custom payload data" }

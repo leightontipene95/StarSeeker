@@ -223,7 +223,6 @@ Then open `NotificationClient.html` or 'http://localhost:3001' in your browser t
 
 - User segmentation for targeted notifications
 - Notification scheduling and campaigns
-- Analytics and delivery tracking
 - Integration with existing admin dashboards
 
 ## Final Thoughts
